@@ -43,6 +43,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake-compiler', '~> 0.9'
   s.add_development_dependency 'shoulda', '~> 3.5'
 
-  s.add_dependency 'ffi', '~> 1.1'
-  s.add_dependency 'rmagick', '~> 2.13'
+  s.add_dependency 'ffi', '~> 1.9.25'
+  s.add_dependency 'mini_magick', '~> 4.9'
 end

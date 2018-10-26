@@ -1,12 +1,13 @@
 require File.expand_path( File.dirname(__FILE__) + '/test_helper')
+require 'shoulda'
 require 'zxing'
 
 class ZXingTest < MiniTest::Test
-  context "A QR decoder singleton" do
+  describe "A QR decoder singleton" do
 
     class Foo < Struct.new(:v); def to_s; self.v; end; end
 
-    setup do
+    before do
       @decoder = ZXing
       @uri = "http://2d-code.co.uk/images/bbc-logo-in-qr-code.gif"
       @path = File.expand_path( File.dirname(__FILE__) + '/qrcode.png')
@@ -16,43 +17,29 @@ class ZXingTest < MiniTest::Test
       @path_result = "http://rubyflow.com"
     end
 
-    should "decode a URL" do
-      assert_equal @decoder.decode(@uri), @uri_result
-    end
-
-    should "decode a file path" do
+    it "decode a file path" do
       assert_equal @decoder.decode(@path), @path_result
     end
 
-    should "return nil if #decode fails" do
+    it "return nil if #decode fails" do
       assert_nil @decoder.decode(@google_logo)
     end
 
-    should "raise an exception if #decode! fails" do
+    it "raise an exception if #decode! fails" do
       assert_raises(ZXing::ReaderException,
                     ZXing::NotFoundException) { @decoder.decode!(@google_logo) }
     end
-
-    should "decode objects that respond to #path" do
-      assert_equal @decoder.decode(@file), @path_result
-    end
-
-    should "call #to_s to argument passed in as a last resort" do
-      assert_equal @decoder.decode(Foo.new(@path)), @path_result
-    end
   end
 
-  context "A QR decoder module" do
-    
-    setup do
+  describe "A QR decoder module" do
+    before do
       class SpyRing; include ZXing end
       @ring = SpyRing.new
     end
 
-    should "include #decode and #decode! into classes" do
+    it "include #decode and #decode! into classes" do
       assert @ring.method(:decode)
       assert @ring.method(:decode!)
     end
-
   end
 end
