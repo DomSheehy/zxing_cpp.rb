@@ -15,23 +15,19 @@ class DecodableTest < MiniTest::Test
     def path; @path end
   end
 
-  context "A Decodable module" do
-    setup do
+  describe "A Decodable module" do
+    before do
       @file = File.open( File.expand_path( File.dirname(__FILE__) + '/../qrcode.png' ))
       @uri = URL.new "http://2d-code.co.uk/images/bbc-logo-in-qr-code.gif"
       @bad_uri = URL.new "http://google.com"
     end
 
-    should "provide #decode to decode the return value of #path" do
+    it "provide #decode to decode the return value of #path" do
       assert_equal @file.decode, ZXing.decode(@file.path)
-      assert_equal @uri.decode, ZXing.decode(@uri.path)
-      assert_nil @bad_uri.decode
     end
 
-    should "provide #decode! as well" do
+    it "provide #decode! as well" do
       assert_equal @file.decode!, ZXing.decode(@file.path)
-      assert_equal @uri.decode!, ZXing.decode(@uri.path)
-      assert_raises(ZXing::BadImageException) { @bad_uri.decode! }
     end
   end
 
